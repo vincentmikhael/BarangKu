@@ -68,7 +68,7 @@ const category = StyleSheet.create({
 const slider = StyleSheet.create({
   image: {width: 250,height: 150,marginHorizontal: 10,borderRadius: 20,resizeMode: 'contain'}
 })
-export default function App() {
+export default function Filter() {
     return (
       <View>
         <View style={searchbar.card}>
@@ -94,10 +94,7 @@ export default function App() {
                 <Text>0 Coins</Text>
               </View>
               </View>
-                
               
-            
-
           </View>
         </View>
 
