@@ -2,6 +2,7 @@
 import React from 'react';
 import { Text,TextInput, View,StyleSheet,ImageBackground,Image,Dimensions, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import ProductBox from './src/components/ProductBox';
 const searchbar = StyleSheet.create({
   card: {
     backgroundColor: 'white',
@@ -152,21 +153,9 @@ export default function App() {
           </View>
         </View>
 
-        <Text style={{marginLeft: 30,fontSize: 20,fontWeight: 'bold',color: 'black'}}>Cek yang menarik disini</Text>
-        <ScrollView horizontal style={{marginTop: 20,marginLeft:25}}>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-        </ScrollView>
-
-        <Text style={{marginLeft: 30,fontSize: 20,fontWeight: 'bold',color: 'black'}}>Cek yang menarik disini</Text>
-        <ScrollView horizontal style={{marginTop: 20,marginLeft:25}}>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-        </ScrollView>
+        <ProductBox></ProductBox>
+        <ProductBox></ProductBox>
+        <ProductBox></ProductBox>
       </View>
     )
 }
