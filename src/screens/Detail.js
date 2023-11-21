@@ -1,5 +1,6 @@
-import React from 'react';
-import { Image, StyleSheet, Text, View } from "react-native";
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import React, { useRef, useState } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, Animated, Easing } from 'react-native';
 
 const comp = StyleSheet.create({
     image: {
@@ -18,6 +19,30 @@ const comp = StyleSheet.create({
     }
 })
 export default function Detail(){
+    const bounceValue = useRef(new Animated.Value(1)).current;
+    const [colorIcon,setColorIcon] = useState('black')
+    const handlePress = () => {
+        // Set up the spring animation for translateY
+        Animated.spring(bounceValue, {
+          toValue: 1, // Bounce distance
+          friction: 2, // Controls "bounciness"
+          useNativeDriver: true,
+        }).start(() => {
+          // Reset the translateY value after the animation is complete
+          Animated.timing(bounceValue, {
+            toValue: 0,
+            duration: 0,
+            useNativeDriver: true,
+          }).start();
+        });
+        setColorIcon('red')
+      };
+
+      const translateVal = bounceValue.interpolate({
+        inputRange: [0, 1],
+        outputRange: [0, 10], // Bounce distance
+      })
+
     return(
         <View>
             <Image style={comp.image} source={{uri: 'https://i.ytimg.com/vi/ZBJuBPH60V8/mqdefault.jpg'}}></Image>
@@ -32,8 +57,12 @@ export default function Detail(){
                 </View>
             </View>
             
-
-
+            <TouchableOpacity style={{position: 'absolute', top: '167%',right: 30}} onPress={handlePress}>
+            <Animated.View style={{transform:[{translateY: translateVal}]}}>
+                <Icon name="heart" size={38} color={colorIcon}></Icon>
+            </Animated.View>
+            </TouchableOpacity>
+            
         </View>
     )
 }

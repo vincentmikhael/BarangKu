@@ -67,7 +67,7 @@ export default function Home() {
   const [search,setSearch] = useState("")
   
     return (
-      <View>
+      <ScrollView>
         <View style={searchbar.card}>
         <TextInput
           style={searchbar.input}
@@ -108,6 +108,6 @@ export default function Home() {
           <ProductBox judul="Mobil Suzuki 2023" harga="200.000.000" lokasi="Arjosari, Malang" foto="https://awsimages.detik.net.id/visual/2021/03/01/penjualan-mobil-bekas-cnbc-indonesiaandean-kristianto-5_169.jpeg?w=650"/>
           <ProductBox judul="Mobil Suzuki 2023" harga="200.000.000" lokasi="Arjosari, Malang" foto="https://awsimages.detik.net.id/visual/2021/03/01/penjualan-mobil-bekas-cnbc-indonesiaandean-kristianto-5_169.jpeg?w=650"/>
         </View>
-      </View>
+      </ScrollView>
     )
 }
