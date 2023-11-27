@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {Home,Detail,Filter, Watchlist,UserProfile} from './src/screens';
+import {Home,Detail,Filter, Watchlist,UserProfile, AddPost} from './src/screens';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -29,6 +29,11 @@ function MainApp(){
         return <Icon name="user-circle" size={24} style={{color: 'purple'}}/>
       }
     }} name='Profile' component={UserProfile}></Tab.Screen>
+    <Tab.Screen options={{
+      tabBarIcon: ({color,size}) =>{
+        return <Icon name="user-circle" size={24} style={{color: 'purple'}}/>
+      }
+    }} name='Buat Iklan' component={AddPost}></Tab.Screen>
   </Tab.Navigator>
   )
 }

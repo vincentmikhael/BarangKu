@@ -88,8 +88,8 @@ export default function Home() {
         </ScrollView>
 
         <View style={{flexDirection: 'row',justifyContent: 'space-between',marginHorizontal: 15,marginTop: 25}}>
-          <Text style={{color: '#34056e'}}>Telusuri Kategori</Text>
-          <Text style={{fontWeight: 'bold',color: '#34056e'}}>Lihat Semua</Text>
+          <Text style={{color: 'black',fontWeight: 'bold'}}>Telusuri Kategori</Text>
+          <Text style={{fontWeight: 'bold',color: 'black'}}>Lihat Semua</Text>
         </View>
 
         <ScrollView horizontal style={category.container}>
@@ -101,7 +101,7 @@ export default function Home() {
           <KategoriBox icon={"percent"} judul={"Pulsa & Tagihan"}/>
         </ScrollView>
 
-        <Text style={{marginLeft: 15,fontSize: 20,fontWeight: 'bold',color: '#34056e'}}>Cek yang menarik disini</Text>
+        <Text style={{marginLeft: 15,fontSize: 20,fontWeight: 'bold',color: 'black',marginTop: 35}}>Cek yang menarik disini</Text>
         <View style={post.container}>
           <ProductBox judul="Mobil Suzuki 2023" harga="200.000.000" lokasi="Arjosari, Malang" foto="https://awsimages.detik.net.id/visual/2021/03/01/penjualan-mobil-bekas-cnbc-indonesiaandean-kristianto-5_169.jpeg?w=650"/>
           <ProductBox judul="Mobil Suzuki 2023" harga="200.000.000" lokasi="Arjosari, Malang" foto="https://awsimages.detik.net.id/visual/2021/03/01/penjualan-mobil-bekas-cnbc-indonesiaandean-kristianto-5_169.jpeg?w=650"/>

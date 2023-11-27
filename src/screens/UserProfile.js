@@ -18,6 +18,7 @@ const comp = StyleSheet.create({
       borderRadius: 12,
       marginVertical: 10,
       paddingHorizontal: 14,
+      borderColor: 'lightgray'
     },
 })
 export default function UserProfile(){
@@ -25,7 +26,7 @@ export default function UserProfile(){
         <View style={comp.container}>
             <Text style={{fontWeight: 'bold',fontSize: 30,marginTop: 25}}>Edit Profile</Text>
           <Image style={comp.image} source={{uri: 'https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg'}}></Image>
-          <Text>Vincent Mikhael</Text>
+          <Text style={{marginBottom: 30}}>Vincent Mikhael</Text>
 
           <TextInput placeholder='Nama' style={comp.input}></TextInput>
           <TextInput placeholder='Username' style={comp.input}></TextInput>
