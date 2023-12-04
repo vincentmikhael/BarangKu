@@ -1,7 +1,8 @@
-import { Image, StyleSheet, Text, View } from "react-native"
+import { Image, StyleSheet, Text, View, Alert } from "react-native"
 import { TouchableHighlight, TouchableOpacity } from "react-native-gesture-handler"
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import {useNavigation} from '@react-navigation/native';
+import axios from "axios";
 const post = StyleSheet.create({
     col: {
       width: '50%',
@@ -30,7 +31,14 @@ const post = StyleSheet.create({
     }
   })
 
-export default function ProductBox({harga,judul,lokasi,foto}){
+export default function ProductBox({harga,judul,lokasi,foto,profile,id}){
+
+  const hapus = id => {
+    
+    axios.delete('https://656beb3de1e03bfd572de674.mockapi.io/barangku/post/'+id).then(e=>{
+      Alert.alert('Berhasil dihapus');
+    })
+  }
   const navigation = useNavigation();
     return (
         <View style={post.col}>
@@ -45,6 +53,15 @@ export default function ProductBox({harga,judul,lokasi,foto}){
               </View>
               </View>
           </TouchableOpacity>
+          {profile == true ? <View>
+            <TouchableOpacity onPress={()=>hapus(id)}>
+              <Text>Hapus</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={()=>navigation.navigate('Buat Iklan',{id: id})}>
+              <Text>Edit</Text>
+            </TouchableOpacity>
+          </View> : ''}
           </View>
     )
 }

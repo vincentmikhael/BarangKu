@@ -1,9 +1,10 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text,TextInput, View,StyleSheet,ImageBackground,Image,Dimensions, ScrollView} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import ProductBox from '../components/ProductBox';
 import KategoriBox from '../components/KategoriBox';
+import axios from 'axios';
 
 
 const searchbar = StyleSheet.create({
@@ -65,6 +66,12 @@ const slider = StyleSheet.create({
 export default function Home() {
 
   const [search,setSearch] = useState("")
+  const [data,setData] = useState([])
+  useEffect(()=>{
+    axios.get('https://656beb3de1e03bfd572de674.mockapi.io/barangku/post').then(e=>{
+      setData(e.data)
+    })
+  },[])
   
     return (
       <ScrollView>
@@ -103,10 +110,9 @@ export default function Home() {
 
         <Text style={{marginLeft: 15,fontSize: 20,fontWeight: 'bold',color: 'black',marginTop: 35}}>Cek yang menarik disini</Text>
         <View style={post.container}>
-          <ProductBox judul="Mobil Suzuki 2023" harga="200.000.000" lokasi="Arjosari, Malang" foto="https://awsimages.detik.net.id/visual/2021/03/01/penjualan-mobil-bekas-cnbc-indonesiaandean-kristianto-5_169.jpeg?w=650"/>
-          <ProductBox judul="Mobil Suzuki 2023" harga="200.000.000" lokasi="Arjosari, Malang" foto="https://awsimages.detik.net.id/visual/2021/03/01/penjualan-mobil-bekas-cnbc-indonesiaandean-kristianto-5_169.jpeg?w=650"/>
-          <ProductBox judul="Mobil Suzuki 2023" harga="200.000.000" lokasi="Arjosari, Malang" foto="https://awsimages.detik.net.id/visual/2021/03/01/penjualan-mobil-bekas-cnbc-indonesiaandean-kristianto-5_169.jpeg?w=650"/>
-          <ProductBox judul="Mobil Suzuki 2023" harga="200.000.000" lokasi="Arjosari, Malang" foto="https://awsimages.detik.net.id/visual/2021/03/01/penjualan-mobil-bekas-cnbc-indonesiaandean-kristianto-5_169.jpeg?w=650"/>
+          {data.map(e=>{
+            return <ProductBox judul={e.nama} harga={e.harga} lokasi="Arjosari, Malang" foto={e.foto}/>
+          })}
         </View>
       </ScrollView>
     )
