@@ -5,6 +5,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 import ProductBox from '../components/ProductBox';
 import KategoriBox from '../components/KategoriBox';
 import axios from 'axios';
+import firestore from '@react-native-firebase/firestore';
+import {useNavigation} from '@react-navigation/native';
 
 
 const searchbar = StyleSheet.create({
@@ -67,11 +69,27 @@ export default function Home() {
 
   const [search,setSearch] = useState("")
   const [data,setData] = useState([])
-  useEffect(()=>{
-    axios.get('https://656beb3de1e03bfd572de674.mockapi.io/barangku/post').then(e=>{
-      setData(e.data)
-    })
-  },[])
+
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState(true);
+  const [blogData, setBlogData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('blog')
+      .onSnapshot(querySnapshot => {
+        const blogs = [];
+        querySnapshot.forEach(documentSnapshot => {
+          blogs.push({
+            ...documentSnapshot.data(),
+            id: documentSnapshot.id,
+          });
+        });
+        setBlogData(blogs);
+        setLoading(false);
+      });
+    return () => subscriber();
+  }, []);
   
     return (
       <ScrollView>
@@ -110,7 +128,7 @@ export default function Home() {
 
         <Text style={{marginLeft: 15,fontSize: 20,fontWeight: 'bold',color: 'black',marginTop: 35}}>Cek yang menarik disini</Text>
         <View style={post.container}>
-          {data.map(e=>{
+          {blogData.map(e=>{
             return <ProductBox judul={e.nama} harga={e.harga} lokasi="Arjosari, Malang" foto={e.foto}/>
           })}
         </View>

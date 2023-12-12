@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "717942738076",
+    "project_id": "barangku-31b0e",
+    "storage_bucket": "barangku-31b0e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:717942738076:android:a287011c8513d0872ab159",
+        "android_client_info": {
+          "package_name": "com.appmatkul"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9aLEYKfI2ou2VcfEJ7ftnZjveZZCeA_k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -4,4 +4,7 @@ import Filter from './Filter'
 import Watchlist from './Watchlist'
 import UserProfile from './UserProfile'
 import AddPost from './AddPost'
-export {Home,Detail,Filter,Watchlist,UserProfile,AddPost}
+import SplashScreen from './SplashScreen'
+import Login from './Login'
+import Register from './Register'
+export {Home,Detail,Filter,Watchlist,UserProfile,AddPost,SplashScreen,Login,Register}

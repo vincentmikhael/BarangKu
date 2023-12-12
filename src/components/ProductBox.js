@@ -33,12 +33,30 @@ const post = StyleSheet.create({
 
 export default function ProductBox({harga,judul,lokasi,foto,profile,id}){
 
-  const hapus = id => {
-    
-    axios.delete('https://656beb3de1e03bfd572de674.mockapi.io/barangku/post/'+id).then(e=>{
-      Alert.alert('Berhasil dihapus');
-    })
-  }
+  const handleDelete = async () => {
+    setLoading(true);
+    try {
+      await firestore()
+        .collection('blog')
+        .doc(id)
+        .delete()
+        .then(() => {
+          console.log('post deleted!');
+        });
+      if (selectedBlog?.image) {
+        const imageRef = storage().refFromURL(selectedBlog?.image);
+        await imageRef.delete();
+      }
+      console.log('post deleted!');
+      closeActionSheet();
+      setSelectedBlog(null);
+      setLoading(false)
+      navigation.navigate('Profile');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const navigation = useNavigation();
     return (
         <View style={post.col}>
@@ -54,7 +72,7 @@ export default function ProductBox({harga,judul,lokasi,foto,profile,id}){
               </View>
           </TouchableOpacity>
           {profile == true ? <View>
-            <TouchableOpacity onPress={()=>hapus(id)}>
+            <TouchableOpacity onPress={handleDelete}>
               <Text>Hapus</Text>
             </TouchableOpacity>
 

@@ -1,6 +1,8 @@
 import Icon from 'react-native-vector-icons/FontAwesome5'
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, Animated, Easing } from 'react-native';
+import firestore from '@react-native-firebase/firestore';
+import storage from '@react-native-firebase/storage';
 
 const comp = StyleSheet.create({
     image: {
@@ -42,6 +44,23 @@ export default function Detail(){
         inputRange: [0, 1],
         outputRange: [0, 10], // Bounce distance
       })
+
+      useEffect(() => {
+        const subscriber = firestore()
+          .collection('post')
+          .doc('1')
+          .onSnapshot(documentSnapshot => {
+            const blogData = documentSnapshot.data();
+            if (blogData) {
+              console.log('Blog data: ', blogData);
+              setSelectedBlog(blogData);
+            } else {
+              console.log(`Blog with ID 1 not found.`);
+            }
+          });
+  
+        return () => subscriber();
+      }, []);
 
     return(
         <View>
