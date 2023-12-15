@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text,TextInput, View,StyleSheet,ImageBackground,Image,Dimensions, ScrollView, Button, Alert} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import DropdownSelect from 'react-native-input-select';
@@ -12,15 +12,44 @@ import auth from '@react-native-firebase/auth';
 
 export default function AddPost(){
   const [image, setImage] = useState(null);
+  const [isEd,setEd] = useState(false);
+  const [oldImage, setOldImage] = useState(null);
   const route = useRoute();
   const navigation = useNavigation();
     const [country, setCountry] = useState();
     const [data,setData] = useState({
-      judul: '',
+      nama: '',
       kategori: '',
       harga: 0,
       deskripsi: '',
     })
+
+    useEffect(() => {
+      console.log(route)
+      if(route.params){
+        const subscriber = firestore()
+        .collection('blog')
+        .doc(route.params.id)
+        .onSnapshot(documentSnapshot => {
+          const blogData = documentSnapshot.data();
+          if (blogData) {
+            setData(blogData);
+            setOldImage(blogData.foto);
+            setImage(blogData.foto);
+            // setLoading(false);
+          } else {
+            console.log("--")
+          }
+        });
+        setEd(true)
+        return () => subscriber();
+      }else{
+        setEd(false)
+      }
+      
+      // setLoading(false);
+      
+    }, [route]);
 
     const handleImagePick = async () => {
       ImagePicker.openPicker({
@@ -75,29 +104,67 @@ export default function AddPost(){
           await reference.putFile(image);
           const url = await reference.getDownloadURL();
           await firestore().collection('blog').add({
-            nama: data.judul,
+            nama: data.nama,
             kategori: data.kategori,
             foto: url,
             harga: data.harga,
             deskripsi: data.deskripsi,
             authorId
           });
-          console.log('Blog added!');
           navigation.navigate('Profile');
         } catch (error) {
           console.log(error);
         }
       };
+
+      const setEdit = async () => {
+        let filename = image.substring(image.lastIndexOf('/') + 1);
+        const extension = filename.split('.').pop();
+        const name = filename.split('.').slice(0, -1).join('.');
+        filename = name + Date.now() + '.' + extension;
+        const reference = storage().ref(`blogimages/${filename}`);
+        try {
+          if (image !== oldImage && oldImage) {
+            const oldImageRef = storage().refFromURL(oldImage);
+            await oldImageRef.delete();
+          }
+          if (image !== oldImage) {
+            await reference.putFile(image);
+          }
+          const url =
+            image !== oldImage ? await reference.getDownloadURL() : oldImage;
+          await firestore().collection('blog').doc(route.params.id).update({
+            nama: data.nama,
+            kategori: data.kategori,
+            harga: data.harga,
+            foto: url,
+            deskripsi: data.deskripsi,
+          });
+  
+          setData({
+            nama: '',
+            kategori: '',
+            harga: 0,
+            deskripsi: '',
+          })
+          setEd(false)
+          setImage(null)
+          setOldImage(null)
+          navigation.navigate('Profile');
+        } catch (error) {
+          console.log(error);
+        }
+      }
     return (
         <View style={post.container}>
-          {route.params ? <Text style={post.header}>Edit Iklan</Text> : <Text style={post.header}>Buat Iklan</Text>}
+          {isEd ? <Text style={post.header}>Edit Iklan</Text> : <Text style={post.header}>Buat Iklan</Text>}
             
 
             <Text style={{marginTop: 25}}>Judul</Text>
-            <TextInput onChangeText={(value) => setData({...data,judul: value})} style={post.input} placeholder=''></TextInput>
+            <TextInput value={data.nama} onChangeText={(value) => setData({...data,nama: value})} style={post.input} placeholder=''></TextInput>
 
             <Text style={{marginTop: 25,marginBottom: 4}}>Kategori</Text>
-            <DropdownSelect placeholder='Pilih Kategori' dropdownStyle={{borderColor: 'lightgray',backgroundColor: 'transparent'}} options={[
+            <DropdownSelect selectedValue={data.kategori} placeholder='Pilih Kategori' dropdownStyle={{borderColor: 'lightgray',backgroundColor: 'transparent'}} options={[
         { label: 'Hp dan Tablet', value: 'NG' },
         { label: 'Peralatam Rumah Tangga', value: 'AX' },
         { label: 'Properti', value: 'DZ' },
@@ -110,10 +177,10 @@ export default function AddPost(){
       </DropdownSelect>
 
             <Text style={{marginTop: 25}}>Harga</Text>
-            <TextInput onChangeText={(value) => setData({...data,harga: value})} style={post.input} placeholder='Rp. '></TextInput>
+            <TextInput value={data.harga} onChangeText={(value) => setData({...data,harga: value})} style={post.input} placeholder='Rp. '></TextInput>
 
             <Text style={{marginTop: 25}}>Deskripsi</Text>
-            <TextInput onChangeText={(value) => setData({...data,deskripsi: value})} style={post.textarea} multiline={true}></TextInput>
+            <TextInput value={data.deskripsi} onChangeText={(value) => setData({...data,deskripsi: value})} style={post.textarea} multiline={true}></TextInput>
 
             {image ? (
           <View style={{position: 'relative'}}>
@@ -161,9 +228,13 @@ export default function AddPost(){
           </TouchableOpacity>
         )}
 
+{isEd ? <TouchableOpacity onPress={setEdit} style={{backgroundColor: 'purple',width: 160,padding: 15,borderRadius: 10,marginTop: 20}}>
+                <Text style={{color: 'white',textAlign: 'center'}}>Edit</Text>
+            </TouchableOpacity> : 
             <TouchableOpacity onPress={setUpload} style={{backgroundColor: 'purple',width: 160,padding: 15,borderRadius: 10,marginTop: 20}}>
                 <Text style={{color: 'white',textAlign: 'center'}}>Upload</Text>
-            </TouchableOpacity>
+            </TouchableOpacity>}
+            
 
 
         </View>

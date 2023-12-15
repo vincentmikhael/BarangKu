@@ -20,7 +20,9 @@ const comp = StyleSheet.create({
         borderColor: 'lightgray'
     }
 })
-export default function Detail(){
+export default function Detail({route}){
+    const {blogId} = route.params;
+    const [selectedBlog,setSelectedBlog] = useState({})
     const bounceValue = useRef(new Animated.Value(1)).current;
     const [colorIcon,setColorIcon] = useState('black')
     const handlePress = () => {
@@ -47,31 +49,30 @@ export default function Detail(){
 
       useEffect(() => {
         const subscriber = firestore()
-          .collection('post')
-          .doc('1')
-          .onSnapshot(documentSnapshot => {
-            const blogData = documentSnapshot.data();
-            if (blogData) {
-              console.log('Blog data: ', blogData);
-              setSelectedBlog(blogData);
-            } else {
-              console.log(`Blog with ID 1 not found.`);
-            }
-          });
+      .collection('blog')
+      .doc(blogId)
+      .onSnapshot(documentSnapshot => {
+        const blogData = documentSnapshot.data();
+        if (blogData) {
+          console.log('Blog data: ', blogData);
+          setSelectedBlog(blogData);
+        } else {
+          console.log(`Blog with ID ${blogId} not found.`);
+        }
+      });
   
         return () => subscriber();
       }, []);
 
     return(
         <View>
-            <Image style={comp.image} source={{uri: 'https://i.ytimg.com/vi/ZBJuBPH60V8/mqdefault.jpg'}}></Image>
+            <Image style={comp.image} source={{uri: selectedBlog.foto}}></Image>
             <View style={comp.container}>
-                <Text style={{fontWeight: 'bold',fontSize: 18,color: 'black'}}>Rp 12.000.000</Text>
-                <Text style={{fontSize: 18}}>HONDA ADV160 ABS 2023</Text>
+                <Text style={{fontWeight: 'bold',fontSize: 18,color: 'black'}}>Rp {selectedBlog.harga}</Text>
+                <Text style={{fontSize: 18}}>{selectedBlog.nama}</Text>
                 <View style={comp.deskripsi}>
                     <Text style={{fontWeight: 'bold',color: 'black'}}>Deskripsi</Text>
-                    <Text>Lorem Ipsum Lorem Ipsum. Lorem Ipsum. Lorem Ipsum Lorem Ipsum. Lorem Ipsum
-                    Lorem Ipsum
+                    <Text>{selectedBlog.deskripsi}
                     </Text>
                 </View>
             </View>

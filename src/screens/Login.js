@@ -61,7 +61,7 @@ const Login = () => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container}>
         <View>
-          <Text style={styles.header}>Log in</Text>
+  
   
           <View style={styles.form}>
             <View>
@@ -185,7 +185,7 @@ const textinput = StyleSheet.create({
     marginBottom: 5,
   },
   container: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#F5F5F5',
     height: 52,
     justifyContent: 'center',
     paddingHorizontal: 10,

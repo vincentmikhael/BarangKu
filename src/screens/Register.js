@@ -117,7 +117,7 @@ const Register = () => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={[styles.container, {paddingVertical}]}>
           <View>
-            <Text style={styles.header}>Sign up</Text>
+
         
             <View style={styles.form}>
               <View>
@@ -278,6 +278,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'space-between',
     paddingHorizontal: 24,
+    paddingTop: 120
   },
   header: {
     fontSize: 32,
@@ -301,7 +302,7 @@ const textinput = StyleSheet.create({
     marginBottom: 5,
   },
   container: {
-    backgroundColor: 'lightgrey',
+    backgroundColor: '#F5F5F5',
     height: 52,
     justifyContent: 'center',
     paddingHorizontal: 10,

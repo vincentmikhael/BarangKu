@@ -19,12 +19,17 @@ function MainApp(){
         return <Icon name="home" size={24} style={{color: 'purple'}}/>
       }
     }} name='Home' component={Home}></Tab.Screen>
-
     <Tab.Screen options={{
+      tabBarIcon: ({color,size}) =>{
+        return <Icon name="Home" size={24} style={{color: 'purple'}}/>
+      }
+    }} name='Filter' component={Filter}></Tab.Screen>
+
+    {/* <Tab.Screen options={{
       tabBarIcon: ({color,size}) =>{
         return <Icon name="heart" size={24} style={{color: 'purple'}}/>
       }
-    }} name='Watchlist' component={Watchlist}></Tab.Screen>
+    }} name='Watchlist' component={Watchlist}></Tab.Screen> */}
     <Tab.Screen options={{
       tabBarIcon: ({color,size}) =>{
         return <Icon name="user-circle" size={24} style={{color: 'purple'}}/>

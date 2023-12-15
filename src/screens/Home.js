@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Text,TextInput, View,StyleSheet,ImageBackground,Image,Dimensions, ScrollView} from 'react-native';
+import { Text,TextInput, View,StyleSheet,ImageBackground,Image,Dimensions, ScrollView, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import ProductBox from '../components/ProductBox';
 import KategoriBox from '../components/KategoriBox';
@@ -100,9 +100,9 @@ export default function Home() {
           placeholder="Cari barang disini"
 
         />
-        <View style={{padding: 10,backgroundColor: '#34056e', borderRadius: 50,marginLeft: 10}}>
-          <Icon style={category.icon} name="user" size={18} color="white"></Icon>
-        </View>
+        <TouchableOpacity onPress={()=> navigation.navigate('Filter')} style={{padding: 10,backgroundColor: '#34056e', borderRadius: 50,marginLeft: 10}}>
+          <Icon style={category.icon} name="search" size={18} color="white"></Icon>
+        </TouchableOpacity>
    
         </View>
         <ScrollView horizontal style={{marginTop: 20,marginHorizontal: 15}}>
@@ -114,7 +114,6 @@ export default function Home() {
 
         <View style={{flexDirection: 'row',justifyContent: 'space-between',marginHorizontal: 15,marginTop: 25}}>
           <Text style={{color: 'black',fontWeight: 'bold'}}>Telusuri Kategori</Text>
-          <Text style={{fontWeight: 'bold',color: 'black'}}>Lihat Semua</Text>
         </View>
 
         <ScrollView horizontal style={category.container}>
@@ -129,7 +128,7 @@ export default function Home() {
         <Text style={{marginLeft: 15,fontSize: 20,fontWeight: 'bold',color: 'black',marginTop: 35}}>Cek yang menarik disini</Text>
         <View style={post.container}>
           {blogData.map(e=>{
-            return <ProductBox judul={e.nama} harga={e.harga} lokasi="Arjosari, Malang" foto={e.foto}/>
+            return <ProductBox id={e.id} judul={e.nama} harga={e.harga} lokasi="Arjosari, Malang" foto={e.foto}/>
           })}
         </View>
       </ScrollView>

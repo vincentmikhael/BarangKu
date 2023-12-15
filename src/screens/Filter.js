@@ -1,7 +1,14 @@
 
-import React from 'react';
-import { Text,TextInput, View,StyleSheet,ImageBackground,Image,Dimensions, ScrollView} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Text,TextInput, View,StyleSheet,ImageBackground,Image,Dimensions, ScrollView, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5'
+import ProductBox from '../components/ProductBox';
+import KategoriBox from '../components/KategoriBox';
+import axios from 'axios';
+import firestore from '@react-native-firebase/firestore';
+import {useNavigation} from '@react-navigation/native';
+
+
 const searchbar = StyleSheet.create({
   card: {
     backgroundColor: 'white',
@@ -33,7 +40,6 @@ const cardSaldo = StyleSheet.create({
   card: {
     elevation: 3,
     backgroundColor: 'white',
-    marginTop: -70,
     padding: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -43,127 +49,70 @@ const cardSaldo = StyleSheet.create({
 })
 const category = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
     gap: 10 
   },
-  col:{
-    width: '20%',
-    padding: 10,
-  },
-  content: {
-    backgroundColor: '#34056e',
-    marginTop: 20,
-    borderRadius: 10,
-    height: 60,
-    position: 'relative',
-    justifyContent:'center',
-    alignItems: 'center'
-  },
-  icon:{
-  }
 })
+
+const post = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginHorizontal: 7
+  },
+})
+
 
 const slider = StyleSheet.create({
   image: {width: 250,height: 150,marginHorizontal: 10,borderRadius: 20,resizeMode: 'contain'}
 })
 export default function Filter() {
+
+  const [search,setSearch] = useState("")
+  const [data,setData] = useState([])
+
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState(true);
+  const [blogData, setBlogData] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('blog')
+      .onSnapshot(querySnapshot => {
+        const blogs = [];
+        querySnapshot.forEach(documentSnapshot => {
+          blogs.push({
+            ...documentSnapshot.data(),
+            id: documentSnapshot.id,
+          });
+        });
+        setBlogData(blogs);
+        setLoading(false);
+      });
+    return () => subscriber();
+  }, []);
+  
     return (
-      <View>
+      <ScrollView>
         <View style={searchbar.card}>
         <TextInput
           style={searchbar.input}
-          placeholder="Cari layanan, makanan, & tujuan"
+          onChange={e=>setSearch(e.target.value)}
+          placeholder="Cari barang disini"
 
         />
-        <View style={{padding: 10,backgroundColor: '#34056e', borderRadius: 50,marginLeft: 10}}>
-          <Icon style={category.icon} name="user" size={18} color="white"></Icon>
-        </View>
+        <TouchableOpacity onPress={()=> navigation.navigate('Filter')} style={{padding: 10,backgroundColor: '#34056e', borderRadius: 50,marginLeft: 10}}>
+          <Icon style={category.icon} name="search" size={18} color="white"></Icon>
+        </TouchableOpacity>
    
         </View>
-        <Image style={{height: 300, resizeMode: 'contain',marginTop: -45}} source={{uri: 'https://img.freepik.com/premium-vector/set-modern-memphis-style-covers-colorful-geometric-background-can-be-used-brochure-design-flyer-web-banner-ads-poster-magazine-flat-cover-web-vector-illustartion_71599-2822.jpg'}}>
+      
 
-        </Image>
-        <View style={{alignItems: 'center',justifyContent: 'center'}}>
-          <View style={cardSaldo.card}>
-              <View style={{flexDirection: 'row',gap: 20}}>
-                <Icon style={category.icon} name="wallet" size={40} color="#34056e"></Icon>
-                <View>
-                <Text style={{fontWeight: 'bold',color: 'black'}}>Rp.2500</Text>
-                <Text>0 Coins</Text>
-              </View>
-              </View>
-              
-          </View>
+        <Text style={{marginLeft: 15,fontSize: 16,fontWeight: 'bold',color: 'black',marginTop: 35}}>Hasil Pencarian (5)</Text>
+        <View style={post.container}>
+          {blogData.map(e=>{
+            return <ProductBox id={e.id} judul={e.nama} harga={e.harga} lokasi="Arjosari, Malang" foto={e.foto}/>
+          })}
         </View>
-
-        <View style={category.container}>
-        <View style={category.col}>
-            <View style={category.content}>
-              <Icon style={category.icon} name="comments" size={30} color="white"></Icon>
-            </View>
-            <Text style={{textAlign: 'center'}}>Chat</Text>
-          </View>
-          <View style={category.col}>
-            <View style={category.content}>
-              <Icon style={category.icon} name="wallet" size={30} color="white"></Icon>
-            </View>
-            <Text style={{textAlign: 'center'}}>Isi Saldo</Text>
-          </View>
-          <View style={category.col}>
-            <View style={category.content}>
-              <Icon style={category.icon} name="sun" size={30} color="white"></Icon>
-            </View>
-            <Text style={{textAlign: 'center'}}>Listrik</Text>
-          </View>
-          
-          <View style={category.col}>
-            <View style={category.content}>
-              <Icon style={category.icon} name="utensils" size={30} color="white"></Icon>
-            </View>
-            <Text style={{textAlign: 'center'}}>Makanan</Text>
-          </View><View style={category.col}>
-            <View style={category.content}>
-              <Icon style={category.icon} name="store" size={30} color="white"></Icon>
-            </View>
-            <Text style={{textAlign: 'center'}}>Belanja</Text>
-          </View>
-          <View style={category.col}>
-            <View style={category.content}>
-              <Icon style={category.icon} name="user" size={30} color="white"></Icon>
-            </View>
-            <Text style={{textAlign: 'center'}}>User</Text>
-          </View>
-          <View style={category.col}>
-            <View style={category.content}>
-              <Icon style={category.icon} name="percent" size={30} color="white"></Icon>
-            </View>
-            <Text style={{textAlign: 'center'}}>Pulsa & Tagihan</Text>
-          </View>
-          <View style={category.col}>
-            <View style={category.content}>
-              <Icon style={category.icon} name="bars" size={30} color="white"></Icon>
-            </View>
-            <Text style={{textAlign: 'center'}}>Menu</Text>
-          </View>
-        </View>
-
-        <Text style={{marginLeft: 30,fontSize: 20,fontWeight: 'bold',color: 'black'}}>Cek yang menarik disini</Text>
-        <ScrollView horizontal style={{marginTop: 20,marginLeft:25}}>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-        </ScrollView>
-
-        <Text style={{marginLeft: 30,fontSize: 20,fontWeight: 'bold',color: 'black'}}>Cek yang menarik disini</Text>
-        <ScrollView horizontal style={{marginTop: 20,marginLeft:25}}>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-          <Image style={slider.image} source={{uri: 'https://images-loyalty.ovo.id/public/deal/89/64/l/27980.jpg?ver=1'}}></Image>
-        </ScrollView>
-      </View>
+      </ScrollView>
     )
 }

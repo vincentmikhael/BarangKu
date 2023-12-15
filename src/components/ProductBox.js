@@ -60,7 +60,7 @@ export default function ProductBox({harga,judul,lokasi,foto,profile,id}){
   const navigation = useNavigation();
     return (
         <View style={post.col}>
-          <TouchableOpacity onPress={() => navigation.navigate('Detail')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Detail',{blogId: id})}>
             <View style={post.card}>
               <Image style={post.image} source={{uri: foto}}/>
               <Text style={post.price}>Rp {harga}</Text>
